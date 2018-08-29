@@ -114,6 +114,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 
+//选择接口跟版本号
 function changeselect() {
     var $select = $("<select id='dropdown-select' placeholder='请选择'>");
     for(key in data1){
@@ -131,7 +132,7 @@ function changeselect() {
     $("#selectInjs").append($select2);
 }
 
-
+//拼接业务table
 function changeTable(mes) {
     var tableData =data1[mes];
     $("#busiTable").empty();
@@ -143,13 +144,70 @@ function changeTable(mes) {
     for(ss in tableData) {
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input type="text" name="'+ss+'" value=""></td>');
-        $tr.append('<td >'+tableData[ss]+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
+        if(ss == 'trade_info'){
+            $tr.append('<td ><input id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />'+'<input id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />'+tableData[ss]+'</td>');
+        }else{
+            $tr.append('<td >'+tableData[ss]+'</td>');
+        }
         $("#busiTable").append($tr);
     }
 }
 
+//拼接交易相关table
+function getTradeInfo(mes) {
+    var tableData =trade_info_ensure;
+    $("#tradeTable").append("</br>");
+    $("#tradeTable").append('<hr>===我是交易信息===<hr><input type="button" onclick="setTradeInfo()"  value="装填交易信息" />');
 
+    for(ss in tableData) {
+        var $tr = $("<tr>");
+        $tr.append('<td width="15%">'+ss+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
+        $tr.append('<td >'+tableData[ss]+'</td>');
+        $("#tradeTable").append($tr);
+    }
+    $("#getTradeInfoBtn").attr("disabled","disabled");
+}
+
+//回填交易信息
+function setTradeInfo(mes) {
+    //如果值为空就直接输入
+    if($("#trade_info").val() == null || $("#trade_info").val() == ""){
+        var json = {};
+        for(ss in trade_info_ensure){
+            json[ss]=$("#"+ss+"").val();
+        }
+        var jsonArray = [];
+        jsonArray.push(json);
+        //塞值
+        $("#trade_info").val(JSON.stringify(jsonArray));
+    }else{
+        //不为空就拼接
+        var jsonArray = JSON.parse($("#trade_info").val());
+        var json = {};
+        for(ss in trade_info_ensure){
+            json[ss]=$("#"+ss+"").val();
+        }
+
+        jsonArray.push(json);
+        $("#trade_info").val(JSON.stringify(jsonArray));
+    }
+    var jsonArrayTrade = JSON.parse($("#trade_info").val())
+    $("#deleteTradeInfoBtn").val('清空('+jsonArrayTrade.length+')');
+
+
+    $("#tradeTable").empty();
+    $("#getTradeInfoBtn").attr("disabled",false);
+}
+
+//删除交易信息
+function deleteTradeInfo() {
+    $("#trade_info").val("");
+    $("#deleteTradeInfoBtn").val('清空(0)');
+}
+
+//加密
 function encrypt() {
 
     var params = $("#form").serializeArray();
@@ -182,7 +240,7 @@ function encrypt() {
     });
 }
 
-
+//提交给gateway 从java端提交，便于解析验签
 function submitGateway() {
     var formOb = $("#form1").serializeArray();
     var values = {};
