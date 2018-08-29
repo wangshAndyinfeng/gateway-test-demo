@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   default-lazy-init="true" xmlns="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:task="http://www.springframework.org/schema/task"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/util
+   http://www.springframework.org/schema/util/spring-util.xsd
+   http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+   default-autowire="byName">
+    <context:component-scan base-package="com.netfinworks" />
+    <mvc:annotation-driven />
+    <mvc:default-servlet-handler />
+
+   <import resource="classpath:META-INF/spring/velocity-config-local.xml"/>
+    <!-- 处理velocity布局 -->
+    <bean id="viewResolver"
+          class="com.netfinworks.gatewaytest.demo.util.resolver.VelocityMultipleLayoutViewResolver">
+        <property name="cache" value="true" />
+        <property name="prefix" value="" />
+        <property name="suffix" value=".vm" />
+        <property name="toolboxConfigLocation" value="WEB-INF/toolbox.xml" />
+        <property name="contentType" value="text/html; charset=utf-8"></property>
+        <property name="exposeSpringMacroHelpers" value="true" />
+        <property name="mappings">
+            <map>
+             <!-- 默认布局 -->
+                <entry key="*" value="common/layout/default.vm" />
+            </map>
+        </property>
+    </bean>
+
+
+
+    <!--&lt;!&ndash; start 编码转换 &ndash;&gt;-->
+    <!--<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+        <!--<property name="supportedMediaTypes">-->
+            <!--<list>-->
+                <!--<value>application/json;charset=UTF-8</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">-->
+        <!--<mvc:message-converters register-defaults="true">-->
+            <!--&lt;!&ndash; 将StringHttpMessageConverter的默认编码设为UTF-8 &ndash;&gt;-->
+            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+                <!--<constructor-arg value="UTF-8" />-->
+            <!--</bean>-->
+            <!--<ref bean="jsonHttpMessageConverter" />-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
+
+    <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes" >
+            <value>
+                json=application/json
+                xml=application/xml
+            </value>
+        </property>
+    </bean>
+    <!-- end -->
+
+
+
+
+</beans>

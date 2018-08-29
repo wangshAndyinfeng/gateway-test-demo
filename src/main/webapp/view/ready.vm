@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>获取openId</title>
+    <link href="../img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <meta name="keywords" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="description" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="hotcss" content="initial-dpr=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+
+    <!-- 引入项目css资源文件,并配置构建地址演示 -->
+    <script src="../js/flexible-css.js"></script>
+    <link  rel="stylesheet" href="../css/payStyle.css?">
+</head>
+<body>
+<div class="pay-order">
+     <div class="list-box">
+        <div class="list">
+            <div class="pay-content l-button learfix">
+                <span class="t-name">公众号Id：</span>
+                <input id="app_id" class="t-price" placeholder="请输入app_id"  oninput="keyPress(this)" type="text" />
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">公众号密钥：</span>
+                <input id="secret" class="t-price" placeholder="请输入secret"  oninput="keyPress(this)" type="text"/>
+            </div>
+        </div>
+     </div>
+    <p class="tips" id="tips">操作</p>
+    <button type="submit" class="btn" id="submit" onclick="submit()">提交</button>
+    <br></br>
+
+    <textarea id="textarea" rows="4" cols="58%" style="margin: 2%" onchange="change(this)" placeholder="请输入你要解析的json"></textarea>
+    <div class="model" id="model">
+        <div class="model-box">
+            <div class="m-title">
+                <p id="t-model"></p>
+            </div>
+            <div class="m-sure" >
+                <p>好</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function change(item) {
+            if(item.value==""){
+                myJqueryAlias('#tips').css('display','block').html('请输入');
+                myJqueryAlias('#submit').css('background-color','#999').attr('disabled',true);
+            }else{
+                var ua = navigator.userAgent.toLowerCase();
+                if(ua.match(/MicroMessenger/i)=="micromessenger"){
+                    myJqueryAlias('#submit').removeAttr('disabled').css('background-color','#1aad19');
+                }else{
+                    myJqueryAlias('#submit').attr('disabled',false).css('background-color','#108ee9');
+
+                }
+                myJqueryAlias('#tips').css('display','none');
+            }
+            var textval = myJqueryAlias("#textarea").val();
+            var data=JSON.parse(textval);
+            myJqueryAlias("#app_id").val(data.app_id);
+            myJqueryAlias("#secret").val(data.secret);
+        }
+
+        function submit(){
+            //取当前的域名
+            if(myJqueryAlias("#app_id").val() == null || myJqueryAlias("#app_id").val() ==""){
+                alert("app_id不能为空");
+                return;
+            }
+            var domain = window.location.host;
+            var partner_id = myJqueryAlias("#partner_id").val();
+            var appid = myJqueryAlias("#app_id").val();
+            var secret = myJqueryAlias("#secret").val();
+            window.location.href = "http://"+domain+"/demo/qrcode/pay.htm?partner_id="+partner_id+"&appid="+appid+"&secret="+secret+"";
+        }
+    </script>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/antbridge.min.js?"></script>
+<script src="../js/jweixin-1.0.0.js?"></script>
+<script src="../busi-js/static.js"></script>
+
+
+
+
+
+</body>
+</html>

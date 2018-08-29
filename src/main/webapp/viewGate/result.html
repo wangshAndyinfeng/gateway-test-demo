@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>快捷通网关接口测试结果页面</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.i18n.properties-min-1.0.9.js"></script>
+	<script type="text/javascript" src="../busi-js/result.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/demo.css" />
+</head>
+<body>
+<div style="text-align:center;font-size:35px;">快捷通网关接口测试结果页面</div>
+<div id='bizContentDiv'>
+	  <table id="resultId" border="1px;" cellspacing="0px;" cellpadding="0px;" width="100%"></table>
+</div>
+<br>
+<div>
+	<button type="text" onclick="loadpns()">pns通知结果页面</button>
+</div>
+<script>
+    function loadpns() {
+        var domain = window.location.host;
+        window.location.href = "http://"+domain+"/demo/viewGate/pnsNotifyResult.html";
+    }
+</script>
+</body>
+</html>

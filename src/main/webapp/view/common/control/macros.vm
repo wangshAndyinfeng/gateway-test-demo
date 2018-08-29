@@ -1,0 +1,231 @@
+#macro( showDateTime $value)
+    $!dateUtil.format($value, 'yyyy-MM-dd HH:mm:ss')
+#end
+
+#macro( showDefaultStartDateTime $value)
+    #if ($value)
+        $!dateUtil.format($value, 'yyyy-MM-dd HH:mm:ss')
+    #else
+        $dateUtil.getWebTodayString() 00:00:00
+    #end
+#end
+
+#macro( showDefaultEndDateTime $value)
+    #if ($value)
+        $!dateUtil.format($value, 'yyyy-MM-dd HH:mm:ss')
+    #else
+    2099-12-31 00:00:00
+    #end
+#end
+
+#macro( showDate $value)
+    $!dateUtil.format($value, 'yyyy-MM-dd')
+#end
+
+#macro( getTime )
+    $!dateUtil.getCurrentTS().getTime()
+#end
+
+#macro( showDateToWebFormat $value)
+    $!dateUtil.convert2WebFormat($value)
+#end
+
+#macro( enumIterator $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem.code" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.message</option>
+    #end
+#end
+
+#macro ( enumMessage $clazz $compareProperty $returnProperty $compareValue)
+    $!jdkEnumUtil.getValueByKey($clazz, $compareProperty, $returnProperty, $compareValue)
+#end
+
+#macro (getConfigDesc $configList $value)
+    #foreach($config in $configList)
+        #if ($config.value.equals($!value))
+            $config.valueDesc
+        #end
+    #end
+#end
+#macro (getBizProductCode $list $value)
+    #foreach($config in $list)
+        #if ($config.bizProductCode.equals($!value))
+            $config.memo
+        #end
+    #end
+#end
+
+
+#macro ( enumMessageByCode $clazz $compareValue)
+    $!jdkEnumUtil.getValueByKey($clazz, "code", "message", $compareValue)
+#end
+
+#macro ( enumMessageByName $clazz $compareValue)
+    $!jdkEnumUtil.getValueByKey($clazz, "name", "message", $compareValue)
+#end
+
+#macro( message $errorMsg $returnMsg $cols)
+    #if($errorMsg)
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>错误：</strong>$errorMsg
+    </div>
+    ##	<tr>
+    ##        <td colspan="$!cols" class="messageBar"><label class="text-error">错误：</label></td>
+    ##    </tr>
+    #end
+    #if($returnMsg)
+    <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>提示：</strong>$returnMsg
+    </div>
+    ##	<tr>
+    ##        <td colspan="$!cols" class="messageBar"><label class="text-error">提示：$returnMsg</label></td>
+    ##    </tr>
+    #end
+#end
+
+#macro( message2 )
+    #if($errorMsg)
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>错误：</strong>$errorMsg
+    </div>
+    #end
+    #if($returnMsg)
+    <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>提示：</strong>$returnMsg
+    </div>
+    #end
+#end
+
+#macro( fieldMessage $message)
+    #if($message)
+    <label class="message">$message</label>
+    #end
+#end
+
+#macro( fieldMessages $message)
+    #if($message)
+        #foreach($error in $message) <label class="message">$error</label> <br> #end
+    #end
+#end
+
+#macro( showSubMenu $parentMenu )
+    #if($parentMenu.subMenus)
+    <ul class="dropdown-menu sub-menu">
+        #foreach($subMenu in ${parentMenu.subMenus})
+        <li>
+            #if ($stringUtil.equals($subMenu.url, "#"))
+                <a href="javascript:function(){};">$!subMenu.name<b class="caret-right"></b></a>
+            </li>
+                #showThirdMenu($subMenu)
+            #else
+                <a href="#springUrl($!subMenu.url)" >$!subMenu.name</a>
+                </li>
+            #end
+
+        #end
+    </ul>
+    #end
+#end
+
+#macro( showThirdMenu $parentMenu )
+    #if($parentMenu.subMenus)
+
+        #foreach($subMenu in ${parentMenu.subMenus})
+        <li>
+            #if ($stringUtil.equals($subMenu.url, "#"))
+                <a class="dropdown" href="javascript:function(){};"><b class="caret-right"></b>$!subMenu.name<b class="caret-right"></b></a>
+            </li>
+                #showThirdMenu($subMenu)
+            #else
+            <a href="#springUrl($!subMenu.url)" ><b class="caret-right"></b>$!subMenu.name</a>
+            </li>
+            #end
+
+        #end
+
+    #end
+#end
+
+#macro( showDateNoSeconds $value)
+    $!dateUtil.format($value, 'yyyy-MM-dd HH:mm')
+#end
+
+#macro( isBlank $value)
+    $!stringUtil.isBlank($value)
+#end
+
+#macro( left $value $length)
+    #if($value)
+        #if($value.length()> $length)
+        <a id="tip" href="#">
+            $!stringUtil.left($value,$length)...
+            <span id="tip_info">$value</span>
+        </a>
+        #else
+            $value
+        #end
+    #end
+#end
+
+#macro( enumIteratorItem $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.message</option>
+    #end
+#end
+
+
+#macro( enumIteratorItem1 $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.claz.simpleName</option>
+    #end
+#end
+
+
+#macro( enumIteratorItem2 $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem.code" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.message</option>
+    #end
+#end
+
+#macro( enumIteratorItemMemo $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem.code" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.memo</option>
+    #end
+#end
+
+#macro( enumIterator1 $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+        $enumItem.code$compareValue
+    <option value="$enumItem.code" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.claz.simpleName</option>
+    #end
+#end
+
+#macro( enumIteratorDisplayName $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem.code" #if($stringUtil.equals($enumItem.code, $compareValue))selected#end>$enumItem.displayName</option>
+    #end
+#end
+
+#macro( enumIteratorName $clazz  $compareValue)
+    #foreach($enumItem in $jdkEnumUtil.getEnumList($clazz))
+    <option value="$enumItem.name()" #if($stringUtil.equals($enumItem.name(), $compareValue))selected#end>$enumItem.message</option>
+    #end
+#end
+
+#macro ( enumDisplayByCodeNoGet $clazz $compareValue)
+    $!jdkEnumUtil.valueByKey($clazz, "code", "displayName", $compareValue)
+#end
+
+#macro ( enumDisplayNameByCode $clazz $compareValue)
+    $!jdkEnumUtil.getValueByKey($clazz, "code", "displayName", $compareValue)
+#end
+
+#macro ( enumKvpIterator $kvpList $compareValue)
+    #foreach($kvp in $!kvpList)
+    <option value="$!kvp.key" #if($stringUtil.equals($!kvp.key, $compareValue))selected#end>$!kvp.value</option>
+    #end
+#end

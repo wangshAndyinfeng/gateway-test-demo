@@ -1,0 +1,20 @@
+
+var data1={"instant_trade":instant_trade,
+    "ensure_trade":ensure_trade,
+    "query_member_name":query_member_name,
+    "query_support_bank_and_limit_list":query_support_bank_and_limit_list,
+    "query_account_balance_list":query_account_balance_list,
+    "entry_account_offline":entry_account_offline,
+    "card_register_apply":card_register_apply,
+    "card_register_advance":card_register_advance,
+    "card_register_query":card_register_query,
+    "card_register_abandon":card_register_abandon,
+    "certification_pay":certification_pay,
+    "certification_pay_confirm":certification_pay_confirm,
+    "card_register_and_pay":card_register_and_pay,
+    "card_register_and_pay_confirm":card_register_and_pay_confirm,
+    "trade_refund":trade_refund,
+    "trade_close":trade_close,
+    "trade_query":trade_query,
+    "card_bin_query":card_bin_query
+};

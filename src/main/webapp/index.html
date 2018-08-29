@@ -1,0 +1,51 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>扫码支付</title>
+    <link href="https://static.kjtpay.com/wallet/new/img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <meta name="keywords" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="description" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="hotcss" content="initial-dpr=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+
+    <!-- 引入项目css资源文件,并配置构建地址演示 -->
+    <script src="${staticAddress}/weChatPay/js/flexible-css.js?v=${frontVersion}"></script>
+    <link  rel="stylesheet" href="${staticAddress}/weChatPay/css/payStyle.css?v=${frontVersion}">
+</head>
+<h2>welcome to wechatTest.</h2>
+<body>
+ <div>
+     <button type="text" onclick="load()">获取openId</button>
+ </div>
+ <br/>
+ <div>
+     <button type="text" onclick="load2()">唤起收银台</button>
+ </div>
+ <br/>
+ <div>
+     <button type="text" onclick="load3()">gateway测试页面</button>
+ </div>
+ <br/>
+ <div>
+     <button type="text" onclick="load4()">pns通知结果页面</button>
+ </div>
+<script>
+    var domain = window.location.host;
+    function load() {
+        window.location.href = "http://"+domain+"/demo/qrcode/ready.htm";
+    }
+    function load2() {
+        window.location.href = "http://"+domain+"/demo/qrcode/open.htm";
+    }
+    function load3() {
+        window.location.href = "http://"+domain+"/demo/viewGate/demo.html";
+    }
+    function load4() {
+        window.location.href = "http://"+domain+"/demo/viewGate/pnsNotifyResult.html";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="INFO" scan="true" scanPeriod="30 seconds" debug="false">
+    <appenders>
+        <RollingFile name="RollingFileInfo" fileName="/opt/logs/atomicprod/atomicprod.log" filePattern="/opt/logs/atomicprod/atomicprod.log.%d{yyyy-MM-dd}.%i" >
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+			<PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] {&quot;traceId&quot;:&quot;%X{traceId}&quot;}%logger{36}[%M:%L]-%replace{%m}{(?&lt;=(((certificates((_n)|N)(umber|o))|((bank|payee|payer)((_c)|C)(ard|ert)((_n|N))o)|(id((_c)|C)ard)|(id((_n)|N)o)|(mobile((_n)|N)o)|(card((_n)|N)o)|(phone((_n)|N)(um|o)))((&quot;:&quot;)|=)))(\d+)}{******}%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileError" fileName="/opt/logs/atomicprod/atomicprod_error.log" filePattern="/opt/logs/atomicprod/atomicprod_error.log.%d{yyyy-MM-dd}.%i">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] {&quot;traceId&quot;:&quot;%X{traceId}&quot;}%logger{36}[%M:%L] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="500MB"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <loggers>
+		<logger name="com.kjtpay.atomicprod" level="INFO"/>
+        <root level="all">
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
+</configuration>

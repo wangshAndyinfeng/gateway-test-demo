@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>唤起收银台</title>
+    <link href="../img/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <meta name="keywords" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="description" content="&#x626B;&#x7801;&#x652F;&#x4ED8;">
+    <meta name="hotcss" content="initial-dpr=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+
+    <!-- 引入项目css资源文件,并配置构建地址演示 -->
+    <script src="../js/flexible-css.js"></script>
+    <link  rel="stylesheet" href="../css/payStyle.css?">
+</head>
+<body>
+<div class="pay-order">
+     <div class="list-box">
+        <div class="list">
+
+            <div class="pay-content l-button learfix">
+                <span class="t-name">公众号Id：</span>
+                <input id="appid" class="t-price" placeholder="请输入app_id" oninput="keyPress(this)" type="text" />
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">时间戳：</span>
+                <input id="timeStamp" class="t-price" placeholder="请输入time_stamp" oninput="keyPress(this)" type="text"/>
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">随机串：</span>
+                <input id="nonceStr" class="t-price" placeholder="请输入nonce_str" oninput="keyPress(this)" type="text"/>
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">package：</span>
+                <input id="package" class="t-price" placeholder="请输入package" oninput="keyPress(this)"  type="text"/>
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">签名方式：</span>
+                <input id="signType"  class="t-price" placeholder="请输入sign_type" oninput="keyPress(this)" type="text"/>
+            </div>
+            <div class="pay-content l-button learfix">
+                <span class="t-name">微信签名：</span>
+                <input id="paySign" class="t-price" placeholder="请输入pay_sign" oninput="keyPress(this)" type="text"/>
+            </div>
+
+        </div>
+     </div>
+    <p class="tips" id="tips">操作</p>
+    <button type="submit" class="btn" id="submit" onclick="pay()" >提交</button>
+    <br></br>
+    <textarea id="textarea1" rows="4" cols="58%" style="margin: 2%" onchange="change1(this)" placeholder="请输入你要解析的json"></textarea>
+    <div class="model" id="model">
+        <div class="model-box">
+            <div class="m-title">
+                <p id="t-model"></p>
+            </div>
+            <div class="m-sure">
+                <p>好</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function change1(item) {
+
+            if(item.value==""){
+                myJqueryAlias('#tips').css('display','block').html('请输入');
+                myJqueryAlias('#submit').css('background-color','#999').attr('disabled',true);
+            }else{
+                var ua = navigator.userAgent.toLowerCase();
+                if(ua.match(/MicroMessenger/i)=="micromessenger"){
+                    myJqueryAlias('#submit').removeAttr('disabled').css('background-color','#1aad19');
+                }else{
+                    myJqueryAlias('#submit').attr('disabled',false).css('background-color','#108ee9');
+
+                }
+                myJqueryAlias('#tips').css('display','none');
+            }
+
+
+            var textval = myJqueryAlias("#textarea1").val();
+            var datanew=JSON.parse(textval);
+            myJqueryAlias("#appid").val(datanew.app_id);
+            myJqueryAlias("#timeStamp").val(datanew.time_stamp);
+            myJqueryAlias("#nonceStr").val(datanew.nonce_str);
+            myJqueryAlias("#package").val(datanew.package);
+            myJqueryAlias("#signType").val(datanew.sign_type);
+            myJqueryAlias("#paySign").val(datanew.pay_sign);
+        }
+        function pay(){
+            if(myJqueryAlias("#appid").val() == null || myJqueryAlias("#appid").val() ==""){
+                alert("app_id不能为空");
+                return;
+            }
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                    onBridgeReady();
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            }else{
+                onBridgeReady();
+            }
+        }
+        function onBridgeReady(){
+            var appid=myJqueryAlias("#appid").val();
+            var timeStamp=myJqueryAlias("#timeStamp").val();
+            var nonceStr=myJqueryAlias("#nonceStr").val();
+            var package=myJqueryAlias("#package").val();
+            var signType=myJqueryAlias("#signType").val();
+            var paySign=myJqueryAlias("#paySign").val();
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId" : appid,     //公众号名称，由商户传入
+                        "timeStamp": timeStamp,         //时间戳，自1970年以来的秒数
+                        "nonceStr" : nonceStr, //随机串
+                        "package" : package,
+                        "signType" : signType,         //微信签名方式:
+                        "paySign" : paySign    //微信签名
+                    },function(res){
+                        if(res.err_msg == "get_brand_wcpay_request:ok"){
+                            alert("!唤起收银台成功");
+                        }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+                            console.log("用户取消支付")
+                        }else{
+                            alert("!唤起收银台失败");
+                            location.href="/error/500.htm";
+                        }
+                    });
+        }
+    </script>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/antbridge.min.js?"></script>
+<script src="../js/jweixin-1.0.0.js?"></script>
+<script src="../busi-js/static.js"></script>
+
+
+
+
+
+</body>
+</html>
