@@ -10,14 +10,12 @@ $(function() {
         $("#service").val($("#dropdown-select").val());
         changeTable($("#dropdown-select").val());
     }
-    var sel=document.getElementById("dropdown-select2");
-    sel.onchange=function(){
+    var sel1=document.getElementById("dropdown-select2");
+    sel1.onchange=function(){
         $("#version").val($("#dropdown-select2").val());
     }
 
-
-
-
+    //提交到demo后端
     $('#submitBtn').click(function(){
 
         var signData ={
@@ -117,10 +115,10 @@ Date.prototype.Format = function (fmt) { //author: meizz
 //选择接口跟版本号
 function changeselect() {
     var $select = $("<select id='dropdown-select' placeholder='请选择'>");
-    for(key in data1){
+    for(item in data1){
         var $option = $("<option>");
-        $option.attr("value",key);
-        $option.text(key);
+        $option.attr("value",item);
+        $option.text(enToCN[item]);
         $select.append($option);
     }
     $("#selectInjs").append("<span>接口名：</span>")
@@ -144,18 +142,32 @@ function changeTable(mes) {
     for(ss in tableData) {
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
-        if(ss == 'trade_info'){
-            $tr.append('<td ><input id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />'+'<input id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />'+tableData[ss]+'</td>');
+        var str = tableData[ss].split("&");
+        var tableDataVal1= str[0];
+        var tableDataVal2= str[1];
+        if(ss == 'cashier_type'){
+            $tr.append('<td width="15%"><select  id="cashier_type" name="cashier_type"><option value="WEB">WEB</option ><option value="H5">H5</option><option value="SDK">SDK</option></select></td>')
         }else{
-            $tr.append('<td >'+tableData[ss]+'</td>');
+            $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+tableDataVal1+'"></td>');
+        }
+
+        if(ss == 'trade_info') {
+            $tr.append('<td ><input id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />' + '<input id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />' +tableDataVal2+ '</td>');
+        }else if(ss == 'pay_method'){
+            $tr.append('<td ><input id="getPaymethodBtn" type="button" onclick="getPaymethod()"  value="获取支付方式" />'+tableDataVal2+'</td>');
+        }else if(ss == 'terminal_info'){
+            $tr.append('<td ><input id="getTerminalInfoBtn" type="button" onclick="getTerminalInfo()"  value="获取终端信息域" />'+tableDataVal2+'</td>');
+        }else if(ss == 'merchant_custom'){
+            $tr.append('<td ><input id="getMerchantCustomBtn" type="button" onclick="getMerchantCustom()"  value="获取商户自定义域" />'+tableDataVal2+'</td>');
+        }else{
+            $tr.append('<td >'+tableDataVal2+'</td>');
         }
         $("#busiTable").append($tr);
     }
 }
 
 //拼接交易相关table
-function getTradeInfo(mes) {
+function getTradeInfo() {
     var tableData =trade_info_ensure;
     $("#tradeTable").append("</br>");
     $("#tradeTable").append('<hr>===我是交易信息===<hr><input type="button" onclick="setTradeInfo()"  value="装填交易信息" />');
@@ -169,6 +181,118 @@ function getTradeInfo(mes) {
     }
     $("#getTradeInfoBtn").attr("disabled","disabled");
 }
+
+//拼接获取终端信息table
+function getTerminalInfo() {
+    var tableData =terminal_info;
+    $("#terminal_infoTable").append("</br>");
+    $("#terminal_infoTable").append('<hr>===我是终端信息===<hr><input type="button" onclick="setTerminalInfo()"  value="装填终端信息" />');
+
+    for(ss in tableData) {
+        var str = tableData[ss].split("&");
+        var terminaltableVal1= str[0];
+        var terminaltableVal2= str[1];
+
+        var $tr = $("<tr>");
+        $tr.append('<td width="15%">'+ss+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+terminaltableVal1+'"></td>');
+        $tr.append('<td >'+terminaltableVal2+'</td>');
+        $("#terminal_infoTable").append($tr);
+    }
+    $("#getTerminalInfoBtn").attr("disabled","disabled");
+}
+//拼接获取商户自定义域 table
+function getMerchantCustom() {
+    var tableData =merchant_custom;
+    $("#merchant_customTable").append("</br>");
+    $("#merchant_customTable").append('<hr>===我是商户自定义域===<hr><input type="button" onclick="setMerchantCustom()"  value="装填商户自定义域" />');
+
+    for(ss in tableData) {
+        var str = tableData[ss].split("&");
+        var merchanttableVal1= str[0];
+        var merchanttableVal2= str[1];
+        var $tr = $("<tr>");
+        $tr.append('<td width="15%">'+ss+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+merchanttableVal1+'"></td>');
+        $tr.append('<td >'+merchanttableVal2+'</td>');
+        $("#merchant_customTable").append($tr);
+    }
+    $("#getMerchantCustomBtn").attr("disabled","disabled");
+}
+
+//拼接支付方式相关
+function getPaymethod() {
+    var tableData =paymethod;
+    $("#selectPaymethod").append("</br>");
+    $("#selectPaymethod").append('<hr>===我是支付方式===<hr><input type="button" onclick="setPaymethod()"  value="装填paymethod" />');
+    var $select = $("<select id='payMethodSelect' onchange='paymethodTable()' placeholder='请选择'>");
+    for(key in tableData){
+        var $option = $("<option>");
+        $option.attr("value",key);
+        $option.text(key);
+        $select.append($option);
+    }
+    $("#selectPaymethod").append("<span>payMethod：</span>")
+    $("#selectPaymethod").append($select);
+    $("#selectPaymethod").append('<table  id="payMethodTabel" border="1px;" cellspacing="0px;" cellpadding="0px;" width="100%"></table>');
+    //装填支付方式table
+    paymethodTable();
+    $("#getPaymethodBtn").attr("disabled","disabled");
+}
+
+//装填支付方式table
+function paymethodTable() {
+    $("#payMethodTabel").empty();
+    var tableData2 = paymethod[$("#payMethodSelect").val()];
+    for(ss in tableData2) {
+        var str = tableData2[ss].split("&");
+        var  paymethodVal1= str[0];
+        var  paymethodVal2= str[1];
+        var $tr = $("<tr>");
+        $tr.append('<td width="15%">'+ss+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+paymethodVal1+'"></td>');
+        $tr.append('<td >'+paymethodVal2+'</td>');
+        $("#payMethodTabel").append($tr);
+    }
+
+}
+
+//装填支付方式table
+function setPaymethod() {
+    var tableData2 = paymethod[$("#payMethodSelect").val()];
+    var json = {};
+    for(ss in tableData2) {
+        json[ss]=$("#"+ss+"").val();
+    }
+    $("#pay_method").val(JSON.stringify(json))
+    $("#selectPaymethod").empty();
+    $("#getPaymethodBtn").attr("disabled",false);
+}
+
+//装填终端信息域table
+function setTerminalInfo() {
+    var tableData2 = terminal_info;
+    var json = {};
+    for(ss in tableData2) {
+        json[ss]=$("#"+ss+"").val();
+    }
+    $("#terminal_info").val(JSON.stringify(json))
+    $("#terminal_infoTable").empty();
+    $("#getTerminalInfoBtn").attr("disabled",false);
+}
+
+//装填客户自定义域table
+function setMerchantCustom() {
+    var tableData2 = merchant_custom;
+    var json = {};
+    for(ss in tableData2) {
+        json[ss]=$("#"+ss+"").val();
+    }
+    $("#merchant_custom").val(JSON.stringify(json))
+    $("#merchant_customTable").empty();
+    $("#getMerchantCustomBtn").attr("disabled",false);
+}
+
 
 //回填交易信息
 function setTradeInfo(mes) {
