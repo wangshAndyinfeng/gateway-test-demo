@@ -135,7 +135,7 @@ function changeTable(mes) {
     var tableData =data1[mes];
     $("#busiTable").empty();
     $("#busiTable").append('<tr>' +
-        '<th colspan="3">以下是业务参数，业务参数都会加密后放入请求参数集合(biz_content)参数中<input type="button" id="encryptBtn" onclick="encrypt()" value="加密业务参数并设置到请求参数集合中" /></th>' +
+        '<th colspan="3">以下是业务参数，业务参数都会加密后放入请求参数集合(biz_content)参数中<input class="mybtn" type="button" id="encryptBtn" onclick="encrypt()" value="加密业务参数并设置到请求参数集合中" /></th>' +
         '</tr>');
 
 
@@ -148,17 +148,17 @@ function changeTable(mes) {
         if(ss == 'cashier_type'){
             $tr.append('<td width="15%"><select  id="cashier_type" name="cashier_type"><option value="WEB">WEB</option ><option value="H5">H5</option><option value="SDK">SDK</option></select></td>')
         }else{
-            $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+tableDataVal1+'"></td>');
+            $tr.append('<td width="15%"><input  type="text" id="'+ss+'" name="'+ss+'" value="'+tableDataVal1+'"></td>');
         }
 
         if(ss == 'trade_info') {
-            $tr.append('<td ><input id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />' + '<input id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />' +tableDataVal2+ '</td>');
+            $tr.append('<td ><input class="mybtn" id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />' + '<input class="mybtn" id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />' +tableDataVal2+ '</td>');
         }else if(ss == 'pay_method'){
-            $tr.append('<td ><input id="getPaymethodBtn" type="button" onclick="getPaymethod()"  value="获取支付方式" />'+tableDataVal2+'</td>');
+            $tr.append('<td ><input  class="mybtn" id="getPaymethodBtn" type="button" onclick="getPaymethod()"  value="获取支付方式" />'+tableDataVal2+'</td>');
         }else if(ss == 'terminal_info'){
-            $tr.append('<td ><input id="getTerminalInfoBtn" type="button" onclick="getTerminalInfo()"  value="获取终端信息域" />'+tableDataVal2+'</td>');
+            $tr.append('<td ><input  class="mybtn" id="getTerminalInfoBtn" type="button" onclick="getTerminalInfo()"  value="获取终端信息域" />'+tableDataVal2+'</td>');
         }else if(ss == 'merchant_custom'){
-            $tr.append('<td ><input id="getMerchantCustomBtn" type="button" onclick="getMerchantCustom()"  value="获取商户自定义域" />'+tableDataVal2+'</td>');
+            $tr.append('<td ><input  class="mybtn" id="getMerchantCustomBtn" type="button" onclick="getMerchantCustom()"  value="获取商户自定义域" />'+tableDataVal2+'</td>');
         }else{
             $tr.append('<td >'+tableDataVal2+'</td>');
         }
@@ -170,12 +170,12 @@ function changeTable(mes) {
 function getTradeInfo() {
     var tableData =trade_info_ensure;
     $("#tradeTable").append("</br>");
-    $("#tradeTable").append('<hr>===我是交易信息===<hr><input type="button" onclick="setTradeInfo()"  value="装填交易信息" />');
+    $("#tradeTable").append('<hr>===我是交易信息===<hr><input class="mybtn" type="button" onclick="setTradeInfo()"  value="装填交易信息" />');
 
     for(ss in tableData) {
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
+        $tr.append('<td width="15%"><input  type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
         $tr.append('<td >'+tableData[ss]+'</td>');
         $("#tradeTable").append($tr);
     }
@@ -186,7 +186,7 @@ function getTradeInfo() {
 function getTerminalInfo() {
     var tableData =terminal_info;
     $("#terminal_infoTable").append("</br>");
-    $("#terminal_infoTable").append('<hr>===我是终端信息===<hr><input type="button" onclick="setTerminalInfo()"  value="装填终端信息" />');
+    $("#terminal_infoTable").append('<hr>===我是终端信息===<hr><input class="mybtn" type="button" onclick="setTerminalInfo()"  value="装填终端信息" />');
 
     for(ss in tableData) {
         var str = tableData[ss].split("&");
@@ -205,7 +205,7 @@ function getTerminalInfo() {
 function getMerchantCustom() {
     var tableData =merchant_custom;
     $("#merchant_customTable").append("</br>");
-    $("#merchant_customTable").append('<hr>===我是商户自定义域===<hr><input type="button" onclick="setMerchantCustom()"  value="装填商户自定义域" />');
+    $("#merchant_customTable").append('<hr>===我是商户自定义域===<hr><input  class="mybtn" type="button" onclick="setMerchantCustom()"  value="装填商户自定义域" />');
 
     for(ss in tableData) {
         var str = tableData[ss].split("&");
@@ -213,7 +213,7 @@ function getMerchantCustom() {
         var merchanttableVal2= str[1];
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+merchanttableVal1+'"></td>');
+        $tr.append('<td width="15%"><input  type="text" id="'+ss+'" name="'+ss+'" value="'+merchanttableVal1+'"></td>');
         $tr.append('<td >'+merchanttableVal2+'</td>');
         $("#merchant_customTable").append($tr);
     }
@@ -224,7 +224,7 @@ function getMerchantCustom() {
 function getPaymethod() {
     var tableData =paymethod;
     $("#selectPaymethod").append("</br>");
-    $("#selectPaymethod").append('<hr>===我是支付方式===<hr><input type="button" onclick="setPaymethod()"  value="装填paymethod" />');
+    $("#selectPaymethod").append('<hr>===我是支付方式===<hr><input class="mybtn" type="button" onclick="setPaymethod()"  value="装填paymethod" />');
     var $select = $("<select id='payMethodSelect' onchange='paymethodTable()' placeholder='请选择'>");
     for(key in tableData){
         var $option = $("<option>");
@@ -250,7 +250,7 @@ function paymethodTable() {
         var  paymethodVal2= str[1];
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+paymethodVal1+'"></td>');
+        $tr.append('<td width="15%"><input class="mybtn" type="text" id="'+ss+'" name="'+ss+'" value="'+paymethodVal1+'"></td>');
         $tr.append('<td >'+paymethodVal2+'</td>');
         $("#payMethodTabel").append($tr);
     }
@@ -371,7 +371,7 @@ function submitGateway() {
     for( x in formOb ){
         values[formOb[x].name] = formOb[x].value;
     }
-    values["url"] = "https://zgateway.kjtpay.com/recv.do";
+    values["url"] = $("#getUrl").val();
     var signData = JSON.stringify(values)
 
     var req ={
@@ -395,8 +395,29 @@ function submitGateway() {
     });
 }
 
-
-
+function cuozuojson() {
+    if($("#tradeJson").attr("style") != ""){
+        $("#tradeJson").attr("style","");
+        $("#caozuoTrade2").attr("style","");
+        $("#caozuoTrade1").attr("style","display: none");
+    }else{
+        $("#tradeJson").attr("style","display: none");
+        $("#caozuoTrade2").attr("style","display: none");
+        $("#caozuoTrade1").attr("style","");
+    }
+    var formOb = $("#form").serializeArray();
+    var values = {};
+    for( x in formOb ){
+        var name = formOb[x].name;
+        var value = formOb[x].value;
+        if(name == 'trade_info') {
+            values[name] = JSON.parse(value);
+        } else {
+            values[name] = value;
+        }
+    }
+    $("#jsonView").val(JSON.stringify(values,null,4));
+}
 
 
 

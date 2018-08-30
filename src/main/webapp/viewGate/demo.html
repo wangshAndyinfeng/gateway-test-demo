@@ -22,6 +22,17 @@
 	<script type="text/javascript" src="../busi-js/demoMain.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/demo.css" />
+	<style>
+		.mybtn:hover {
+			 background: #93ff93;
+		 }
+		.mybtn {
+			background: #DFFFDF;
+		}
+		.mybtn[disabled] {
+			background: #A9A9A9;
+		}
+	</style>
 </head>
 <body>
 <h4>快捷通交易查询网关接口测试页面</h4>
@@ -36,13 +47,20 @@
 <div id='bizContentDiv'>
 	<div id="selectInjs" class="dropdown-sin-1" >
 	</div>
+    <div id="caozuoTrade1"><input type="button" onclick="cuozuojson()" value="展开json" /></div>
+    <div id="caozuoTrade2" style="display: none"><input type="button" onclick="cuozuojson()" value="关闭json" /></div>
+
+
+	<div id="tradeJson" style="display: none">
+		<textarea id="jsonView" rows="20" cols="100"></textarea>
+	</div>
+
 
 	<form id="form">
 	  <table id="busiTable" border="1px;" cellspacing="0px;" cellpadding="0px;" width="100%">
 	  </table>
 
 	</form>
-
 
 
 	<table id="tradeTable" border="1px;" cellspacing="0px;" cellpadding="0px;" width="100%">
@@ -67,7 +85,7 @@
 			<tr>
 				<td width="15%">商户网站请求号:</td>
 				<td width="15%"><input id="requestNo" type="text" name="request_no" ></td>
-				<td>(请求号，字母数字下划线，确保每次请求唯一，非空)<input type="button" onclick="requestNoCreate()"  value="生成请求号" /></td>
+				<td>(请求号，字母数字下划线，确保每次请求唯一，非空)<input class="mybtn" type="button" onclick="requestNoCreate()"  value="生成请求号" /></td>
 			</tr>
 			<tr>
 				<td>接口名称:</td>
@@ -86,12 +104,19 @@
 			</tr>
 			<tr>
 				<td>字符集:</td>
-				<td><input type="text" id='charset' name="charset" value="UTF-8"></td>
+				<td><select type="text" id="charset" name="charset">
+					<option value="UTF-8">UTF-8</option>
+					<option value="GBK">GBK</option>
+				</select>
 				<td>(类型有：UTF-8;GBK，非空)</td>
 			</tr>
 			<tr>
 				<td>签名方式:</td>
-				<td><input type="text" id="sign_type" name="sign_type" value="ITRUS"></td>
+				<td><select type="text" id="sign_type" name="sign_type">
+					<option value="ITRUS">ITRUS</option>
+					<option value="RSA">RSA</option>
+				</select>
+				</td>
 				<td>(签名方式只支持ITRUS/RSA，非空)</td>
 			</tr>
 			<tr>
@@ -102,7 +127,7 @@
 			<tr>
 				<td>请求时间:</td>
 				<td><input id="requestTime" type="text" name="timestamp" ></td>
-				<td>(格式"yyyy-MM-dd HH:mm:ss"，如2017-06-24 13:07:56，请求时间必须在10分钟内，非空)<input type="button" onclick="requestTimeCreate()"  value="同步时间" /></td>
+				<td>(格式"yyyy-MM-dd HH:mm:ss"，如2017-06-24 13:07:56，请求时间必须在10分钟内，非空)<input class="mybtn" type="button" onclick="requestTimeCreate()"  value="同步时间" /></td>
 			</tr>
 			<tr>
 				<td>请求参数集合支持的格式:</td>
@@ -117,7 +142,11 @@
 
 
 			<tr>
-				<td colspan="3"><input type="button" id="submitBtn"  value="提交Gateway" /></td>
+				<td colspan="3"><span>选发送环境：</span><select  id="getUrl" >
+					<option value="https://zgateway.kjtpay.com/recv.do">准生产</option>
+					<option value="https://c1gateway.kjtpay.com/recv.do">测试1环境</option>
+					<option value="https://c2gateway.kjtpay.com/recv.do">测试2环境</option>
+				</select>&nbsp;&nbsp;<input class="mybtn" type="button" id="submitBtn"  value="提交Gateway" /></td>
 			</tr>
 		</table>
 	</form>
