@@ -27,10 +27,13 @@
 			 background: #93ff93;
 		 }
 		.mybtn {
-			background: #DFFFDF;
+			background: #87CEEB;
 		}
 		.mybtn[disabled] {
 			background: #A9A9A9;
+		}
+		.myinput:hover {
+			background: #B0C4DE;
 		}
 	</style>
 </head>
@@ -48,7 +51,7 @@
 	<div id="selectInjs" class="dropdown-sin-1" >
 	</div>
     <div id="caozuoTrade1"><input type="button" onclick="cuozuojson()" value="展开json" /></div>
-    <div id="caozuoTrade2" style="display: none"><input type="button" onclick="cuozuojson()" value="关闭json" /></div>
+    <div id="caozuoTrade2" style="display: none"><input type="button" onclick="guanbijson()" value="关闭json" /></div>
 
 
 	<div id="tradeJson" style="display: none">
@@ -75,6 +78,13 @@
 
 <div align="center"><hr>===我是分割线===<hr></div>
 
+<div id="caozuoTrade3"><input type="button" id="caozuobutton3" onclick="cuozuojson('caozuobutton3')" value="展开json" /></div>
+<div id="caozuoTrade4" style="display: none"><input type="button" id="caozuobutton4" onclick="guanbijson('caozuobutton4')" value="关闭json" /></div>
+
+
+<div id="tradeJson2" style="display: none">
+	<textarea id="jsonView2" rows="20" cols="100"></textarea>
+</div>
 <div>
 
 	<form id="form1" action="https://zgateway.kjtpay.com/recv.do" method="post">
@@ -152,8 +162,9 @@
 	</form>
 </div>
 
+<script>
+	$("input[type='text']").addClass("myinput");
 
-
-
+</script>>
 </body>
 </html>

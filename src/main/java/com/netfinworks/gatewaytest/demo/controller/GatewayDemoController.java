@@ -445,7 +445,7 @@ public class GatewayDemoController extends Base {
         String trade_info = tradeReq.getString("trade_info");
 
         if(StringUtils.isNotBlank(trade_info)){
-            JSONObject tradeInfo = JSONObject.parseObject(trade_info);
+            JSONArray tradeInfo = JSONArray.parseArray(trade_info);
 
 
 //			//转换交易扩展参数trade_ext
@@ -456,10 +456,13 @@ public class GatewayDemoController extends Base {
 //			}
 
             //转换分账列表royalty_info
-            String royalty_info = tradeInfo.getString("royalty_info");
-            if(StringUtils.isNotBlank(royalty_info)){
-                JSONArray royaltyInfos = JSONArray.parseArray(royalty_info);
-                tradeInfo.put("royalty_info", royaltyInfos);
+            for(int i=0;i<tradeInfo.size();i++){
+                JSONObject job = tradeInfo.getJSONObject(i);
+                String royalty_info = job.getString("royalty_info");
+                if(StringUtils.isNotBlank(royalty_info)){
+                    JSONArray royaltyInfos = JSONArray.parseArray(royalty_info);
+                    job.put("royalty_info", royaltyInfos);
+                }
             }
 
             tradeReq.put("trade_info", tradeInfo);

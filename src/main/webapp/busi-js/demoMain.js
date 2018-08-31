@@ -395,30 +395,60 @@ function submitGateway() {
     });
 }
 
-function cuozuojson() {
-    if($("#tradeJson").attr("style") != ""){
+function cuozuojson(id) {
+    if(id == "caozuobutton3"){
+        var formOb = $("#form1").serializeArray();
+        $("#tradeJson2").attr("style","");
+        $("#caozuoTrade4").attr("style","");
+        $("#caozuoTrade3").attr("style","display: none");
+    }else{
+        var formOb = $("#form").serializeArray();
         $("#tradeJson").attr("style","");
         $("#caozuoTrade2").attr("style","");
         $("#caozuoTrade1").attr("style","display: none");
+    }
+    var values = {};
+    for( x in formOb ){
+        var name = formOb[x].name;
+        var value = formOb[x].value;
+        if(name == 'trade_info' && value != null && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'terminal_info' && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'merchant_custom' && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'pay_method' && value != "") {
+            values[name] = JSON.parse(value);
+        }else{
+            values[name] = value;
+        }
+    }
+    if(id == "caozuobutton3"){
+        $("#jsonView2").val(JSON.stringify(values,null,4));
+    }else{
+        $("#jsonView").val(JSON.stringify(values,null,4));
+    }
+}
+
+function guanbijson(id) {
+    if(id == "caozuobutton4"){
+        $("#tradeJson2").attr("style","display: none");
+        $("#caozuoTrade4").attr("style","display: none");
+        $("#caozuoTrade3").attr("style","");
     }else{
         $("#tradeJson").attr("style","display: none");
         $("#caozuoTrade2").attr("style","display: none");
         $("#caozuoTrade1").attr("style","");
     }
-    var formOb = $("#form").serializeArray();
-    var values = {};
-    for( x in formOb ){
-        var name = formOb[x].name;
-        var value = formOb[x].value;
-        if(name == 'trade_info') {
-            values[name] = JSON.parse(value);
-        } else {
-            values[name] = value;
-        }
-    }
-    $("#jsonView").val(JSON.stringify(values,null,4));
-}
 
+}
+// function panduan() {
+//     if((name == 'terminal_info' && value != "")) {
+//     }else if
+// }
 
 
 /**
