@@ -408,11 +408,21 @@ function cuozuojson(id) {
         $("#caozuoTrade1").attr("style","display: none");
     }
     var values = {};
+    //为了解析form里面可能存在的对象
     for( x in formOb ){
         var name = formOb[x].name;
         var value = formOb[x].value;
         if(name == 'trade_info' && value != null && value != "") {
             values[name] = JSON.parse(value);
+            //为了解析trade_ext
+            var trade_ext = {};
+            for(i=0;i<values[name].length;i++){
+                for(y in values[name][i])
+                if(y == 'trade_ext'){
+                     trade_ext = JSON.parse(values[name][i][y]);
+                     values[name][i].trade_ext = trade_ext;
+                }
+            }
         }
         else if(name == 'terminal_info' && value != "") {
             values[name] = JSON.parse(value);
