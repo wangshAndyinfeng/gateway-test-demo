@@ -64,7 +64,8 @@ var trade_info_ensure= {"out_trade_no":"平台(商户)订单号，字母数字�
     "show_url":"商品展示URL，收银台页面上，商品展示的超链接",
     "notify_url":"服务器异步通知地址，快捷通主动通知商户网站里指定的URL http/https路径，当订单完成后会回调商户并告知订单状态",
     "ensure_amount":"担保金额，取值范围为[0.01，100000000000.00]，精确到小数点后两位,非空",
-    "trade_ext":"交易扩展参数"};
+    "trade_ext":'{"trade_ext":"defult"}&交易扩展参数 可以为空,样例只是json示例'
+};
 
 
 var royalty_info = {"payee_identity_type":"1&分账标识类型，默认1，1-快捷通会员ID,2-快捷通会员登录号",

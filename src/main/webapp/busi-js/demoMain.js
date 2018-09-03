@@ -294,7 +294,7 @@ function setMerchantCustom() {
 }
 
 
-//回填交易信息
+//回填交易信息到
 function setTradeInfo(mes) {
     //如果值为空就直接输入
     if($("#trade_info").val() == null || $("#trade_info").val() == ""){
@@ -335,10 +335,7 @@ function deleteTradeInfo() {
 function encrypt() {
 
     var params = $("#form").serializeArray();
-    var values = {};
-    for( x in params ){
-        values[params[x].name] = params[x].value;
-    }
+    var values = changeToJSON(params)
     var idata = JSON.stringify(values)
 
     var req ={
@@ -407,35 +404,9 @@ function cuozuojson(id) {
         $("#caozuoTrade2").attr("style","");
         $("#caozuoTrade1").attr("style","display: none");
     }
-    var values = {};
-    //为了解析form里面可能存在的对象
-    for( x in formOb ){
-        var name = formOb[x].name;
-        var value = formOb[x].value;
-        if(name == 'trade_info' && value != null && value != "") {
-            values[name] = JSON.parse(value);
-            //为了解析trade_ext
-            var trade_ext = {};
-            for(i=0;i<values[name].length;i++){
-                for(y in values[name][i])
-                if(y == 'trade_ext'){
-                     trade_ext = JSON.parse(values[name][i][y]);
-                     values[name][i].trade_ext = trade_ext;
-                }
-            }
-        }
-        else if(name == 'terminal_info' && value != "") {
-            values[name] = JSON.parse(value);
-        }
-        else if(name == 'merchant_custom' && value != "") {
-            values[name] = JSON.parse(value);
-        }
-        else if(name == 'pay_method' && value != "") {
-            values[name] = JSON.parse(value);
-        }else{
-            values[name] = value;
-        }
-    }
+
+    var values = changeToJSON(formOb);
+
     if(id == "caozuobutton3"){
         $("#jsonView2").val(JSON.stringify(values,null,4));
     }else{
@@ -455,10 +426,39 @@ function guanbijson(id) {
     }
 
 }
-// function panduan() {
-//     if((name == 'terminal_info' && value != "")) {
-//     }else if
-// }
+//转换
+function changeToJSON(formOb) {
+    var values = {};
+    //为了解析form里面可能存在的对象
+    for( x in formOb ){
+        var name = formOb[x].name;
+        var value = formOb[x].value;
+        if(name == 'trade_info' && value != null && value != "") {
+            values[name] = JSON.parse(value);
+            //为了解析trade_ext
+            var trade_ext = {};
+            for(i=0;i<values[name].length;i++){
+                for(y in values[name][i])
+                    if(y == 'trade_ext'){
+                        trade_ext = JSON.parse(values[name][i][y]);
+                        values[name][i].trade_ext = trade_ext;
+                    }
+            }
+        }
+        else if(name == 'terminal_info' && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'merchant_custom' && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'pay_method' && value != "") {
+            values[name] = JSON.parse(value);
+        }else{
+            values[name] = value;
+        }
+    }
+    return values;
+}
 
 
 /**

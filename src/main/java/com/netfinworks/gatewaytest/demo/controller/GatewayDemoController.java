@@ -205,16 +205,17 @@ public class GatewayDemoController extends Base {
             Map<String, String> req = JSON.parseObject(signData, HashMap.class);
             //演示使用请求对象签名
             RequestBase requestBase = convertRequestBaseParm(req);
-            ResponseParameter<String> response = service.post(requestBase, req.get("url"));
+            Map<String, Object> response = service.post(requestBase, req.get("url"));
             VerifyResult verifyResult = verify(response);
             if (verifyResult.isSuccess()) {
-
-                resp.put("code", response.getCode().equals("S10000") ? "0000" : response.getSubCode());
-                resp.put("result",response.getBizContent());
-                resp.put("msg",response.getSubMsg());
+                resp.put("code", response.get("code").equals("S10000") ? "0000" : response.get("sub_code"));
+                resp.put("result",response.get("biz_content"));
+                resp.put("verifymsg", "验签通过");
+                resp.put("msg",response.get("msg"));
             } else {
-                resp.put("code","9999");
-                resp.put("msg","验签不通过");
+                resp.put("code","0000");
+                resp.put("result",response.get("biz_content"));
+                resp.put("verifymsg","验签不通过");
             }
         } else {
             resp.put("code","9999");
@@ -255,20 +256,25 @@ public class GatewayDemoController extends Base {
      * @returnmap
      */
     private VerifyResult verify(Map map){
-
-        if(null == map || StringUtils.isBlank((String)map.get("sign_type")) || StringUtils.isBlank((String)map.get("_input_charset"))){
+        if(null == map || StringUtils.isBlank((String)map.get("sign_type")) || StringUtils.isBlank((String)map.get("charset"))){
             return null;
         }
-
+        Object obj = map.get("biz_content");
+        Gson gson = new Gson();
+        //转换验签后重新装入
+        if(map.get("biz_content")!=null){
+            map.put("biz_content",gson.toJson(map.get("biz_content")));
+        }
         VerifyResult result = null;
-
         if("RSA".equals((String)map.get("sign_type"))){
             //RSA验签
-            result = securityService2.verify(map, (String)map.get("sign"),(String)map.get("_input_charset"));
+            result = securityService2.verify(map, (String)map.get("sign"),(String)map.get("charset"));
         }else if("ITRUS".equals((String)map.get("sign_type"))){
-            result = securityService.verify(map, (String)map.get("sign"),(String)map.get("_input_charset"));
-        }
 
+
+            result = securityService.verify(map, (String)map.get("sign"),(String)map.get("charset"));
+        }
+        map.put("biz_content",obj);
         return result;
     }
 
@@ -383,6 +389,8 @@ public class GatewayDemoController extends Base {
             List<String> fieldNameList = new ArrayList<String>();
             fieldNameList.add("transfer_list");
             return convertWithSpecialParm(reqParm, fieldNameList);
+        }else if("card_bin_query".equals(service)){
+            return convertWithSpecialParm(reqParm, null);
         }
 
 

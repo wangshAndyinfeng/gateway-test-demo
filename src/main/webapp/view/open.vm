@@ -128,7 +128,7 @@
                             console.log("用户取消支付")
                         }else{
                             alert("!唤起收银台失败");
-                            location.href="/error/500.htm";
+                            // location.href="/error/500.htm";
                         }
                     });
         }

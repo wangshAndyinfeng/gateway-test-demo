@@ -11,6 +11,10 @@ $(function() {
                 $tr.append('<td >'+data.result[item]+'</td>');
                 $("#resultId").append($tr);
             }
+            var $tr = $("<tr>");
+            $tr.append('<td width="15%">验签结果：</td>');
+            $tr.append('<td >'+data.verifymsg+'</td>');
+            $("#resultId").append($tr);
         }else if(data.code == "9999"){
             alert(data.msg);
         }else{

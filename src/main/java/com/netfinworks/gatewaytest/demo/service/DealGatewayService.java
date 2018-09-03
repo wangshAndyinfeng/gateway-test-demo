@@ -1,22 +1,16 @@
 package com.netfinworks.gatewaytest.demo.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kjtpay.gateway.common.domain.base.RequestBase;
-import com.kjtpay.gateway.common.domain.base.ResponseParameter;
 import com.netfinworks.gatewaytest.demo.service.base.ExtServiceBase;
 import org.apache.commons.httpclient.NameValuePair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.util.Map;
 
 @Service
 public class DealGatewayService extends ExtServiceBase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeChatService.class);
-
-    public ResponseParameter<String> post(RequestBase requestBase, String url){
+    public Map<String, Object> post(RequestBase requestBase, String url){
         NameValuePair[] params = new NameValuePair[10];
         params[0] = new NameValuePair("request_no", requestBase.getRequestNo());
         params[1] = new NameValuePair("service", requestBase.getService());
@@ -28,9 +22,6 @@ public class DealGatewayService extends ExtServiceBase {
         params[7] = new NameValuePair("timestamp", requestBase.getTimestamp());
         params[8] = new NameValuePair("format", requestBase.getFormat());
         params[9] = new NameValuePair("biz_content", requestBase.getBizContent());
-
-        ResponseParameter<String> result = httpsRequestToAliJsonObject(url, params);
-
-        return result;
+        return httpsRequestToAliJsonObject(url, params);
     }
 }
