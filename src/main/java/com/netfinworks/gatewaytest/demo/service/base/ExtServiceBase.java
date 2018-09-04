@@ -55,6 +55,7 @@ public class ExtServiceBase {
 
     protected Map<String, Object> httpsRequestToAliJsonObject(String requestUrl, NameValuePair[] params) {
         try {
+            Map<String, Object> map = new HashMap<>();
             HttpProtocolHandler httpProtocolHandler = HttpProtocolHandler.getInstance();
             final HttpRequest request = new HttpRequest(HttpResultType.BYTES);
             request.setMethod(HttpRequest.METHOD_POST);
@@ -66,6 +67,10 @@ public class ExtServiceBase {
                 return null;
             }
             String strResult = response.getStringResult();
+            if(strResult.indexOf("form") > 0){
+                map.put("form",strResult);
+                return map;
+            }
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(
                             new TypeToken<Map<String, Object>>(){}.getType(),
@@ -89,7 +94,7 @@ public class ExtServiceBase {
                                     return treeMap;
                                 }
                             }).create();
-            Map<String, Object> map = gson.fromJson(strResult,new TypeToken<Map<String, Object>>(){}.getType());
+            map = gson.fromJson(strResult,new TypeToken<Map<String, Object>>(){}.getType());
             return map;
         } catch (Exception e) {
             LOGGER.error("https请求异常.caused:",e);

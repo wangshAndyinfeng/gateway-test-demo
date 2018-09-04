@@ -197,8 +197,8 @@ var transfer_to_card = {
     "bank_branch_name":"&银行分支行名称",
     "token_id":"&协议号，字母数字下划线，当协议号非空时，以协议号匹配的信息为准",
     "bank_line_no":"&分支行行号。若为大额或者对公出款，该字段务必填写。否则可能会出现部分银行出款失败或者出款被退票等现象",
-    "bank_prov":"分支行所在省",
-    "bank_city":"分支行所在市",
+    "bank_prov":"&分支行所在省",
+    "bank_city":"&分支行所在市",
     "biz_product_code":"&业务产品码20204-银行卡代扣",
     "pay_product_code":"61&支付产品码61-银行卡代扣-借记卡62-银行卡代扣-信用卡63-银行卡代扣-对公",
     "memo":"&出款目的",
@@ -300,7 +300,7 @@ var sub_merchant_change_bankcard = {
     "out_trade_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
     "partner_user_id":"&平台方分配给用户的唯一标识",
     "identity_id":"&快捷通分配给平台方子商户的会员ID，与partner_user_id二选一。",
-    "new_bankcard_no":"变更新的结算银行卡号，不支持信用卡和存折账号，只支持借记卡",
+    "new_bankcard_no":"&变更新的结算银行卡号，不支持信用卡和存折账号，只支持借记卡",
     "bank_account_name":"&银行卡户名1、企业与公司名称一致2、个体工商户如果是对私银行卡，与法人姓名一致，如果是对公银行卡，与个体工商户名称一致;3、个人商家：银行卡户名必须与注册的姓名一致",
     "bank_code":"&开户银行编码,详情参考附录",
     "bank_name":"&开户行名称",
@@ -323,7 +323,7 @@ var sub_merchant_change_settle_type = {
     "out_trade_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
     "partner_user_id":"&平台方分配给用户的唯一标识",
     "identity_id":"&快捷通分配给平台方子商户的会员ID，与partner_user_id二选一。",
-    "settle_type":"结算方式 1、主动提现；2、委托提现",
+    "settle_type":"&结算方式 1、主动提现；2、委托提现",
     "entrust_withdrawal_amount":"&委托提现起结金额 结算方式选择为2时，不可空，字段类型为数值，小数点保留2位，>=0.01的数字，单位：元，例如 当entrust_withdrawal_amount=100时，即当账户的可用余额大于或等于100时才会结算出款",
     "extension":"&扩展备注，商户自定义，如需使用，请与技术支持联系",
 }
@@ -348,7 +348,7 @@ var sub_merchant_withdrawal_cash = {
 var query_balance_by_account_type = {
     "identity_type":"&标识类型，快捷通会员标识类型，默认1 1-快捷通会员ID2-快捷通会员登录号 ",
     "identity":"&商户/平台/子商户的快捷通会员ID或登录账号，与identity_type配合使用",
-    "account_type":"账户类型，参考附录 账户类型"
+    "account_type":"&账户类型，参考附录 账户类型"
 }
 
 //账户类型

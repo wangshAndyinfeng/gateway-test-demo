@@ -79,7 +79,6 @@ function requestTimeCreate() {
     var requestNo = orderTime + lstStr;
     var outTradeNo = orderTime + lstStr;
     var requestTime = new Date().Format("yyyy-MM-dd HH:mm:ss");
-    var requestTime = new Date().Format("yyyy-MM-dd HH:mm:ss");
     $("#requestTime").val(requestTime);
 }
 
@@ -153,6 +152,10 @@ function changeTable(mes) {
 
         if(ss == 'trade_info') {
             $tr.append('<td ><input class="mybtn" id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />' + '<input class="mybtn" id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />' +tableDataVal2+ '</td>');
+        }else if(ss == 'out_trade_no'){
+            $tr.append('<td ><input class="mybtn" id="setMainTableTradeNoBtn" type="button" onclick="setMainTableTradeNo()"  value="设置outTradeNo" />'+tableDataVal2+'</td>');
+        }else if(ss == 'royalty_info') {
+            $tr.append('<td ><input class="mybtn" id="setRoyaltyInfoBtn" type="button" onclick="setRoyaltyInfo()"  value="设置分润信息" />'+tableDataVal2+ '</td>');
         }else if(ss == 'pay_method'){
             $tr.append('<td ><input  class="mybtn" id="getPaymethodBtn" type="button" onclick="getPaymethod()"  value="获取支付方式" />'+tableDataVal2+'</td>');
         }else if(ss == 'terminal_info'){
@@ -173,13 +176,43 @@ function getTradeInfo() {
     $("#tradeTable").append('<hr>===我是交易信息===<hr><input class="mybtn" type="button" onclick="setTradeInfo()"  value="装填交易信息" />');
 
     for(ss in tableData) {
+        var str = tableData[ss].split("&");
+        var tableDataVal1= str[0];
+        var tableDataVal2= str[1];
         var $tr = $("<tr>");
         $tr.append('<td width="15%">'+ss+'</td>');
-        $tr.append('<td width="15%"><input  type="text" id="'+ss+'" name="'+ss+'" value=""></td>');
-        $tr.append('<td >'+tableData[ss]+'</td>');
+        $tr.append('<td width="15%"><input  type="text" id="'+ss+'" name="'+ss+'" value="'+tableDataVal1+'"></td>');
+
+        if(ss == 'out_trade_no') {
+            $tr.append('<td ><input class="mybtn" id="setTradeInfoTradeNoBtn" type="button" onclick="setMainTableTradeNo()"  value="设置outTradeNo" />'+tableDataVal2+ '</td>');
+        }else if(ss == 'royalty_info') {
+            $tr.append('<td ><input class="mybtn" id="setRoyaltyInfoBtn" type="button" onclick="setRoyaltyInfo()"  value="设置分润信息" />'+tableDataVal2+ '</td>');
+        }else{
+            $tr.append('<td >'+tableDataVal2+'</td>');
+        }
         $("#tradeTable").append($tr);
     }
     $("#getTradeInfoBtn").attr("disabled","disabled");
+}
+
+//设置交易table的outTradeNo
+function setTradeInfoTradeNo() {
+    var orderTime = new Date().Format("yyyyMMddHHmmss");
+    var lstStr=Math.round(Math.random()*1000000);//产生0-1000000的整数随机数
+    var requestNo = orderTime + lstStr;
+    $("#out_trade_no").val(requestNo);
+}
+//设置主table的outTradeNo   同上，有时间合一个
+function setMainTableTradeNo() {
+    var orderTime = new Date().Format("yyyyMMddHHmmss");
+    var lstStr=Math.round(Math.random()*1000000);//产生0-1000000的整数随机数
+    var requestNo = orderTime + lstStr;
+    $("#out_trade_no").val(requestNo);
+}
+
+//设置分润信息
+function setRoyaltyInfo(){
+    $("#royalty_info").val('[{"payee_identity_type":"1","payee_member_id":"100000112694","payee_identity_type":"1","amount":"0.02"}]');
 }
 
 //拼接获取终端信息table
@@ -363,6 +396,12 @@ function encrypt() {
 
 //提交给gateway 从java端提交，便于解析验签
 function submitGateway() {
+    if($("#pay_method") != undefined && $("#pay_method").val() == ""){
+        $("#form1").attr("action",$("#getUrl").val());
+        $("#form1").submit();
+        return;
+    }
+
     var formOb = $("#form1").serializeArray();
     var values = {};
     for( x in formOb ){
@@ -382,11 +421,16 @@ function submitGateway() {
         data:  req,
         dataType: "json",
         success: function (data) {
-            localStorage.setItem("data",JSON.stringify(data));
-            debugger
-            var domain = window.location.host;
-            var openUrl ="http://"+domain+"/demo/viewGate/result.html";
-            window.open(openUrl);
+            if(data != null && data.form != null){
+                $("#shouyintai").html(data.form);
+            }else{
+                localStorage.setItem("data",JSON.stringify(data));
+                debugger
+                var domain = window.location.host;
+                var openUrl ="http://"+domain+"/demo/viewGate/result.html";
+                window.open(openUrl);
+            }
+
         },
 
     });
@@ -439,9 +483,13 @@ function changeToJSON(formOb) {
             var trade_ext = {};
             for(i=0;i<values[name].length;i++){
                 for(y in values[name][i])
-                    if(y == 'trade_ext'){
+                    if(y == 'trade_ext' && values[name][i].trade_ext != ""){
                         trade_ext = JSON.parse(values[name][i][y]);
                         values[name][i].trade_ext = trade_ext;
+                    }
+                    if(y == 'royalty_info' && values[name][i].royalty_info != ""){
+                        royalty_info = JSON.parse(values[name][i][y]);
+                        values[name][i].royalty_info = royalty_info;
                     }
             }
         }
@@ -453,6 +501,9 @@ function changeToJSON(formOb) {
         }
         else if(name == 'pay_method' && value != "") {
             values[name] = JSON.parse(value);
+        }
+        else if(name == 'pay_param' && value != "") {
+                values[name] = JSON.parse(value);
         }else{
             values[name] = value;
         }

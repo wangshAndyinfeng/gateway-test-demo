@@ -8,6 +8,7 @@ import com.kjtpay.gateway.common.domain.VerifyResult;
 import com.kjtpay.gateway.common.domain.base.RequestBase;
 import com.kjtpay.gateway.common.domain.base.ResponseParameter;
 import com.kjtpay.gateway.common.util.security.SecurityService;
+import com.netfinworks.gatewaytest.demo.ro.ServiceNameConstant;
 import com.netfinworks.gatewaytest.demo.service.DealGatewayService;
 import com.netfinworks.gatewaytest.demo.service.FileOutputService;
 import com.netfinworks.gatewaytest.demo.service.MySecurityService;
@@ -74,12 +75,12 @@ public class GatewayDemoController extends Base {
 
             JSONObject bizReq = null;
             //因js转出的嵌套json有\，使用gson转成请求类会报错，故需要转换一下
-            bizReq = convertParm(service, req);
+//            bizReq = convertParm(service, req);
+//
+//            if(bizReq != null){
+//                LOGGER.info("转换后json："+bizReq.toString());
 
-            if(bizReq != null){
-                LOGGER.info("转换后json："+bizReq.toString());
-
-               String result = encrypt(signType, bizReq.toString(), charset);
+               String result = encrypt(signType, req, charset);
                 LOGGER.info("encrypt方法操作结果："+result);
                 resp.put("code","0000");
                 resp.put("message","");
@@ -87,7 +88,6 @@ public class GatewayDemoController extends Base {
                return resp;
             }
 
-        }
 
         resp.put("code","9999");
         resp.put("message","请求参数填写出错或必填参数未填写");
@@ -206,12 +206,16 @@ public class GatewayDemoController extends Base {
             //演示使用请求对象签名
             RequestBase requestBase = convertRequestBaseParm(req);
             Map<String, Object> response = service.post(requestBase, req.get("url"));
+            if(response != null && response.get("form")!=null){
+                return response;
+            }
             VerifyResult verifyResult = verify(response);
             if (verifyResult.isSuccess()) {
                 resp.put("code", response.get("code").equals("S10000") ? "0000" : response.get("sub_code"));
                 resp.put("result",response.get("biz_content"));
                 resp.put("verifymsg", "验签通过");
                 resp.put("msg",response.get("msg"));
+                resp.put("submsg",response.get("sub_msg"));
             } else {
                 resp.put("code","0000");
                 resp.put("result",response.get("biz_content"));
@@ -339,10 +343,10 @@ public class GatewayDemoController extends Base {
      */
     public JSONObject convertParm(String service, String reqParm){
 
-        if("instant_trade".equals(service)){
+        if(ServiceNameConstant.INSTANT_TRADE.equals(service)){
             return convertInstantTradeParm(reqParm);
 
-        }else if("ensure_trade".equals(service)){
+        }else if(ServiceNameConstant.ENSURE_TRADE.equals(service)){
             return convertInstantTradeParm(reqParm);
 
         }else if("trade_settle".equals(service)){
@@ -350,7 +354,7 @@ public class GatewayDemoController extends Base {
             fieldNameList.add("royalty_info");
             return convertWithSpecialParm(reqParm, fieldNameList);
 
-        }else if("entry_account_offline".equals(service)){
+        }else if(ServiceNameConstant.ENTRY_ACCOUNT_OFFLINE.equals(service)){
             return convertWithSpecialParm(reqParm, null);
 
         }else if("batch_bank_witholding".equals(service)){
@@ -358,18 +362,18 @@ public class GatewayDemoController extends Base {
             fieldNameList.add("withholding_list");
             return convertWithSpecialParm(reqParm, fieldNameList);
 
-        }else if("trade_bank_witholding".equals(service)){
+        }else if(ServiceNameConstant.TRADE_BANK_WITHOLDING.equals(service)){
             List<String> fieldNameList = new ArrayList<String>();
             fieldNameList.add("royalty_info");
             return convertWithSpecialParm(reqParm, fieldNameList);
 
-        }else if("trade_close".equals(service)){
+        }else if(ServiceNameConstant.TRADE_CLOSE.equals(service)){
             return convertWithSpecialParm(reqParm, null);
 
-        }else if("trade_query".equals(service)){
+        }else if(ServiceNameConstant.TRADE_QUERY.equals(service)){
             return convertWithSpecialParm(reqParm, null);
 
-        }else if("trade_refund".equals(service)){
+        }else if(ServiceNameConstant.TRADE_REFUND.equals(service)){
             List<String> fieldNameList = new ArrayList<String>();
             fieldNameList.add("royalty_info");
             return convertWithSpecialParm(reqParm, fieldNameList);
@@ -379,17 +383,17 @@ public class GatewayDemoController extends Base {
             fieldNameList.add("transfer_list");
             return convertWithSpecialParm(reqParm, fieldNameList);
 
-        }else if("transfer_to_account".equals(service)){
+        }else if(ServiceNameConstant.TRANSFER_TO_ACCOUNT.equals(service)){
             return convertWithSpecialParm(reqParm, null);
 
-        }else if("transfer_to_card".equals(service)){
+        }else if(ServiceNameConstant.TRANSFER_TO_CARD.equals(service)){
             return convertWithSpecialParm(reqParm, null);
 
         }else if("batch_transfer_card".equals(service)){
             List<String> fieldNameList = new ArrayList<String>();
             fieldNameList.add("transfer_list");
             return convertWithSpecialParm(reqParm, fieldNameList);
-        }else if("card_bin_query".equals(service)){
+        }else if(ServiceNameConstant.CARD_BIN_QUERY.equals(service)){
             return convertWithSpecialParm(reqParm, null);
         }
 
