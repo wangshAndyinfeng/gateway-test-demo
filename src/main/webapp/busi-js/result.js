@@ -3,7 +3,7 @@ $(function() {
     var data =JSON.parse(localStorage.getItem("data"));
     console.log(data);
     if(data) {
-        localStorage.removeItem("data")
+        // localStorage.removeItem("data")
         if(data.code == "0000"){
             for(y in data.result) {
                 var obj = data.result[y];
@@ -12,7 +12,13 @@ $(function() {
                         var $tr = $("<tr>");
                         for (item in obj[i]) {
                             $tr.append('<td width="15%">' + item + '</td>');
-                            $tr.append('<td >' + obj[i][item] + '</td>');
+                            //如果是数组就解析转换成字符串
+                            if(obj[i][item] instanceof Array){
+                                $tr.append('<td >' + JSON.stringify(obj[i][item]) + '</td>');
+                            }else{
+                                $tr.append('<td >' + obj[i][item] + '</td>');
+                            }
+
                         }
                         $("#resultId").append($tr);
                     }

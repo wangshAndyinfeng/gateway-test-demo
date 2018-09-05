@@ -3,11 +3,24 @@ $(function() {
     base();
     changeselect();
     changeTable($("#dropdown-select").val());
-    $("#version").val($("#dropdown-select2").val());
     $("#service").val($("#dropdown-select").val());
+    $("#version").val($("#dropdown-select2").val());
     var sel=document.getElementById("dropdown-select");
     sel.onchange=function(){
-        $("#service").val($("#dropdown-select").val());
+
+        //如果选择的版本中包含了"1" 标识版本只能用1.1
+        if($("#dropdown-select").val().indexOf("1") > 0){
+
+            var strser = $("#dropdown-select").val().replace("1","");
+            $("#service").val(strser);
+            $("#dropdown-select2").val("1.1");
+            // $("#dropdown-select2").attr("disabled","disabled");
+        }else{
+            // $("#dropdown-select2").attr("disabled",false);
+            $("#dropdown-select2").val("1.0");
+            $("#service").val($("#dropdown-select").val());
+        }
+
         changeTable($("#dropdown-select").val());
     }
     var sel1=document.getElementById("dropdown-select2");
@@ -154,6 +167,8 @@ function changeTable(mes) {
             $tr.append('<td ><input class="mybtn" id="getTradeInfoBtn" type="button" onclick="getTradeInfo()"  value="获取交易信息" />' + '<input class="mybtn" id="deleteTradeInfoBtn" type="button" onclick="deleteTradeInfo()"  value="清空(0)" />' +tableDataVal2+ '</td>');
         }else if(ss == 'out_trade_no'){
             $tr.append('<td ><input class="mybtn" id="setMainTableTradeNoBtn" type="button" onclick="setMainTableTradeNo()"  value="设置outTradeNo" />'+tableDataVal2+'</td>');
+        }else if(ss == 'transfer_list') {
+            $tr.append('<td ><input class="mybtn" id="getTransfer_listBtn" type="button" onclick="getTransfer_list()"  value="设置转账列表" />'+tableDataVal2+ '</td>');
         }else if(ss == 'royalty_info') {
             $tr.append('<td ><input class="mybtn" id="setRoyaltyInfoBtn" type="button" onclick="setRoyaltyInfo()"  value="设置分润信息" />'+tableDataVal2+ '</td>');
         }else if(ss == 'pay_method'){
@@ -234,6 +249,33 @@ function getTerminalInfo() {
     }
     $("#getTerminalInfoBtn").attr("disabled","disabled");
 }
+
+//拼接转账列表信息table
+function getTransfer_list() {
+    if($("#service").val() == "batch_transfer_card"){
+        var tableData =CardPartyInfo;
+    }else if($("#service").val() == "batch_transfer_account"){
+        var tableData =AcctPartyInfo;
+    }
+
+    $("#terminal_infoTable").append("</br>");
+    $("#terminal_infoTable").append('<hr>===我是转账列表信息===<hr><input class="mybtn" type="button" onclick="setTransfer_list()"  value="装填转账列表信息" />');
+
+    for(ss in tableData) {
+        var str = tableData[ss].split("&");
+        var terminaltableVal1= str[0];
+        var terminaltableVal2= str[1];
+
+        var $tr = $("<tr>");
+        $tr.append('<td width="15%">'+ss+'</td>');
+        $tr.append('<td width="15%"><input type="text" id="'+ss+'" name="'+ss+'" value="'+terminaltableVal1+'"></td>');
+        $tr.append('<td >'+terminaltableVal2+'</td>');
+        $("#terminal_infoTable").append($tr);
+    }
+    $("#getTransfer_listBtn").attr("disabled","disabled");
+}
+
+
 //拼接获取商户自定义域 table
 function getMerchantCustom() {
     var tableData =merchant_custom;
@@ -326,32 +368,82 @@ function setMerchantCustom() {
     $("#getMerchantCustomBtn").attr("disabled",false);
 }
 
+//装填转账列表table
+function setTransfer_list() {
+    if($("#service").val() == "batch_transfer_card"){
+        var tableData2 =CardPartyInfo;
+    }else if($("#service").val() == "batch_transfer_account"){
+        var tableData2 =AcctPartyInfo;
+    }
+     //如果值为空
+    if($("#transfer_list").val() == null || $("#transfer_list").val() == ""){
+        var jsonArray = [];
+        var json = {};
+        for(ss in tableData2) {
+            json[ss]=$("#"+ss+"").val();
+        }
+        jsonArray.push(json);
+        $("#transfer_list").val(JSON.stringify(jsonArray));
+    }else{
+        var result = JSON.parse($("#transfer_list").val());
+        var json = {};
+        for(ss in tableData2) {
+            json[ss]=$("#"+ss+"").val();
+        }
+        result.push(json);
+        $("#transfer_list").val(JSON.stringify(result));
+    }
+
+    $("#terminal_infoTable").empty();
+    $("#getTransfer_listBtn").attr("disabled",false);
+}
+
 
 //回填交易信息到
 function setTradeInfo(mes) {
-    //如果值为空就直接输入
+    //如果值为空就直接输入 第一次输入的是json 后面再添加就转成数组
     if($("#trade_info").val() == null || $("#trade_info").val() == ""){
         var json = {};
         for(ss in trade_info_ensure){
             json[ss]=$("#"+ss+"").val();
         }
-        var jsonArray = [];
-        jsonArray.push(json);
+        // var jsonArray = [];
+        // jsonArray.push(json);
         //塞值
-        $("#trade_info").val(JSON.stringify(jsonArray));
+        $("#trade_info").val(JSON.stringify(json));
     }else{
         //不为空就拼接
-        var jsonArray = JSON.parse($("#trade_info").val());
-        var json = {};
-        for(ss in trade_info_ensure){
-            json[ss]=$("#"+ss+"").val();
+
+        var result = JSON.parse($("#trade_info").val());
+        if(result instanceof Array){
+            var json1 = {};
+            for(yy in trade_info_ensure){
+                json1[yy]=$("#"+yy+"").val();
+            }
+            result.push(json1);
+            $("#trade_info").val(JSON.stringify(result));
+        }else if(result instanceof Object){
+            var jsonArray = [];
+            //先把已存在的装填进去
+            jsonArray.push(result);
+            var json2 = {};
+            //然后遍历装填
+            for(zz in trade_info_ensure){
+                json2[zz]=$("#"+zz+"").val();
+            }
+            jsonArray.push(json2);
+            $("#trade_info").val(JSON.stringify(jsonArray));
         }
 
-        jsonArray.push(json);
-        $("#trade_info").val(JSON.stringify(jsonArray));
+
     }
     var jsonArrayTrade = JSON.parse($("#trade_info").val())
-    $("#deleteTradeInfoBtn").val('清空('+jsonArrayTrade.length+')');
+    if(jsonArrayTrade instanceof Array){
+        $("#deleteTradeInfoBtn").val('清空('+jsonArrayTrade.length+')');
+    }else{
+        $("#deleteTradeInfoBtn").val('清空(1)');
+    }
+
 
 
     $("#tradeTable").empty();
@@ -494,6 +586,9 @@ function changeToJSON(formOb) {
             }
         }
         else if(name == 'terminal_info' && value != "") {
+            values[name] = JSON.parse(value);
+        }
+        else if(name == 'transfer_list' && value != "") {
             values[name] = JSON.parse(value);
         }
         else if(name == 'merchant_custom' && value != "") {

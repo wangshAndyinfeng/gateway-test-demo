@@ -72,7 +72,7 @@ var card_register_and_pay = {"payer_identity_type":"1&买家标识类型，买�
     "biz_product_code":"&业务产品码支持列表,非空",
     "bank_card_no":"&银行卡号，字母数字,非空",
     "phone_num":"&手机号码,非空",
-    "bank_card_name":"&银行卡账户名，不能包含数字,非空",
+    "bank_account_name":"&银行卡账户名，不能包含数字,非空",
     "cvv2":"&安全码，信用卡必传",
     "valid_date":"&信用卡有效期YYYY/MM",
     "certificates_type":"&证件类型参考附录证件类型,非空",
@@ -206,6 +206,39 @@ var transfer_to_card = {
     "notify_url":"&服务器异步通知地址，快捷通主动通知商户网站里指定的URL http/https路径，当订单完成后会回调商户并告知订单状态"
 }
 
+//批量转账到银行卡
+var batch_transfer_card = {
+    "out_batch_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
+    "transfer_num":"&转账总笔数，每批次最多1000笔",
+    "transfer_amount":"&转账总金额，15位以内最大保留2位精度数字",
+    "transfer_list":"&转账列表，参考转账列表参数CardPartyInfo",
+    "biz_product_code":"&业务产品码10220-付款到卡（次日）10221-付款到卡（普通）",
+    "payer_identity_type":"1&出款快捷通会员标识类型，默认1 1-快捷通会员ID2-快捷通会员登录号",
+    "payer_identity":"&出款账号",
+    "currency":"CNY&币种，默认人民币CNY",
+    "notify_url":"&服务器异步通知地址，快捷通主动通知商户网站里指定的URL http/https路径，当订单完成后会回调商户并告知订单状态",
+    "memo":"&出款目的"
+}
+
+//转账列表参数
+var CardPartyInfo = {
+    "out_trade_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
+    "amount":"0.01&出款金额，15位以内最大保留2位精度数字",
+    "bank_card_no":"&银行卡号，字母数字",
+    "bank_account_name":"&银行卡账户名，不能包含数字",
+    "bank_code":"&银行编码，字母",
+    "bank_name":"&银行名称",
+    "bank_branch_name":"&银行分支行名称",
+    "token_id":"&协议号，字母数字下划线，当协议号非空时，以协议号匹配的信息为准",
+    "bank_line_no":"&分支行行号。若为大额或者对公出款，该字段务必填写。否则可能会出现部分银行出款失败或者出款被退票等现象",
+    "bank_prov":"&分支行所在省",
+    "bank_city":"&分支行所在市",
+    "pay_product_code":"61&支付产品码61-银行卡代扣-借记卡62-银行卡代扣-信用卡63-银行卡代扣-对公",
+    "memo":"&出款目的",
+}
+
+
+
 //转账到账户
 var transfer_to_account = {
     "out_trade_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
@@ -219,6 +252,28 @@ var transfer_to_account = {
     "memo":"&出款目的",
     "biz_no":"&业务号，对账用",
     "notify_url":"&服务器异步通知地址，快捷通主动通知商户网站里指定的URL http/https路径，当订单完成后会回调商户并告知订单状态"
+}
+
+//批量转账到账户
+var batch_transfer_account = {
+    "out_batch_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
+    "transfer_num":"&转账总笔数，每批次最多1000笔",
+    "transfer_amount":"&转账总金额，15位以内最大保留2位精度数字",
+    "transfer_list":"&转账列表，参考转账列表参数CardPartyInfo",
+    "biz_product_code":"&业务产品码10220-付款到卡（次日）10221-付款到卡（普通）",
+    "payer_identity_type":"1&出款快捷通会员标识类型，默认1 1-快捷通会员ID2-快捷通会员登录号",
+    "payer_identity":"&出款账号",
+    "currency":"CNY&币种，默认人民币CNY",
+    "notify_url":"&服务器异步通知地址，快捷通主动通知商户网站里指定的URL http/https路径，当订单完成后会回调商户并告知订单状态",
+    "memo":"&出款目的",
+}
+
+var AcctPartyInfo = {
+    "out_trade_no":"&平台(商户)订单号，字母数字下划线，确保每笔订单唯一",
+    "amount":"0.01&出款金额，15位以内最大保留2位精度数字",
+    "payee_identity_type":"1&入款快捷通会员标识类型，默认1 1-快捷通会员ID2-快捷通会员登录号",
+    "payee_identity":"&入款账号",
+    "memo":"&出款目的",
 }
 
 //子商户注册
