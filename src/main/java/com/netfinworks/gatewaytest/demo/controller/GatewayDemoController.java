@@ -560,7 +560,8 @@ public class GatewayDemoController extends Base {
      */
     @ResponseBody
     @RequestMapping( value = "/verifyKeyPair.do", method = RequestMethod.POST)
-    public String verifyKeyPair(@RequestParam(value = "keyPair", required = false) String keyPair) {
+    public Map verifyKeyPair(@RequestParam(value = "keyPair", required = false) String keyPair) {
+        Map map = new HashMap();
         try{
             System.out.println("keyPair："+keyPair);
             if(StringUtils.isNotBlank(keyPair)){
@@ -570,16 +571,24 @@ public class GatewayDemoController extends Base {
                 boolean isOk = RSA.verify("test", sign, keyPairJson.getString("publicKey"), "utf-8");
 
                 if(isOk){
-                    return "校验成功";
+                    map.put("code","0000");
+                    map.put("msg","校验成功");
+                    return map;
                 }else{
-                    return "校验失败";
+                    map.put("code","9999");
+                    map.put("msg","校验失败");
+                    return map;
                 }
             }
         }catch(Exception e){
-            return "校验失败";
+            map.put("code","9999");
+            map.put("msg","校验失败");
+            return map;
         }
 
-        return "请正确输入公钥和私钥";
+        map.put("code","9999");
+        map.put("msg","请输入正确的公钥私钥");
+        return map;
     }
 
 

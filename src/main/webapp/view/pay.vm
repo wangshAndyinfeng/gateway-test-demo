@@ -26,8 +26,7 @@
             </div>
         </div>
      </div>
-    <p class="tips" id="tips">支付额度超出限制</p>
-    <button type="submit" class="btn" id="submit">立即支付</button>
+    <button type="submit" class="btn" id="submit">转唤起收银台</button>
     <div class="model" id="model">
     <div class="model-box">
         <div class="m-title">
