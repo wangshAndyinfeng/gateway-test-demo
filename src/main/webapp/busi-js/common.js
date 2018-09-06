@@ -38,3 +38,12 @@ var fillPath = function (pagePath){
 $(document).ready(function() {
 	basePath = getBasePath();
 });
+
+
+
+function returnBack() {
+    var domain = window.location.host;
+    var pathName =  window.document.location.pathname;
+    var projectName = pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    window.location.href = "http://"+domain+projectName+"";
+}

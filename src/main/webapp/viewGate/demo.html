@@ -22,30 +22,17 @@
 	<script type="text/javascript" src="../busi-js/demoMain.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../css/demo.css" />
-	<style>
-		.mybtn:hover {
-			 background: #93ff93;
-		 }
-		.mybtn {
-			background: #87CEEB;
-		}
-		.mybtn[disabled] {
-			background: #A9A9A9;
-		}
-		.myinput:hover {
-			background: #B0C4DE;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="../css/demoBtn.css" />
 </head>
 <body>
 <h4>快捷通交易查询网关接口测试页面</h4>
-
+<div>
 <span class="red">
    		使用步骤：<br>
    		1.点击[加密业务参数并设置到请求参数集合中]按钮将业务参数加密后放入请求参数集合(biz_content)参数中<br>
    		2.点击[提交Gateway]按钮将请求参数提交到快捷通网关
-   	  </span>
-
+</span><span><input type="button" class="inputBTN"  onclick="returnBack()" value="返回"/></span>
+</div>
 
 <div id='bizContentDiv'>
 	<div id="selectInjs" class="dropdown-sin-1" >
@@ -166,6 +153,6 @@
 <script>
 	$("input[type='text']").addClass("myinput");
 
-</script>>
+</script>
 </body>
 </html>

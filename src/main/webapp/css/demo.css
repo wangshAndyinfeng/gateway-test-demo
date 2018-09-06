@@ -1,25 +1,25 @@
 @CHARSET "UTF-8";
 
-div{
-	width:96%;
-	position: relative;
-	left: 2%;
-	margin-top: 50px;
-	margin-bottom: 50px;
+.mybtn:hover {
+	background: #93ff93;
+}
+.mybtn {
+	background: #87CEEB;
+}
+.mybtn[disabled] {
+	background: #A9A9A9;
+}
+.myinput:hover {
+	background: #B0C4DE;
 }
 
-hr{
-	color: menu;
-}
+.inputBTN{
+	background:#87CEEB;
 
-input[type="text"]{
-	width: 98%;
-}
+	position:absolute;
 
-#payMethodSelect,#keyType,#length{
-	background-color: #cce4f9;
-}
+	left:1200px;
 
-.red{
-	color: red;
+	top:20px;
+
 }
