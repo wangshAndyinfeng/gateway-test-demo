@@ -14,10 +14,12 @@ $(function() {
             var strser = $("#dropdown-select").val().replace("1","");
             $("#service").val(strser);
             $("#dropdown-select2").val("1.1");
+            $("#version").val($("#dropdown-select2").val());
             // $("#dropdown-select2").attr("disabled","disabled");
         }else{
             // $("#dropdown-select2").attr("disabled",false);
             $("#dropdown-select2").val("1.0");
+            $("#version").val($("#dropdown-select2").val());
             $("#service").val($("#dropdown-select").val());
         }
 
@@ -27,6 +29,12 @@ $(function() {
     sel1.onchange=function(){
         $("#version").val($("#dropdown-select2").val());
     }
+
+    // var textarea = document.getElementById("jsonView");
+    // textarea.onchange=function(){
+    //     refillForm();
+    // }
+
 
     //提交到demo后端
     $('#submitBtn').click(function(){
@@ -615,5 +623,20 @@ var encodeURL = function (encodeString){
         return encodeURIComponent(encodeString);
     }
 };
+
+function refillForm(){
+    if($("#jsonView").val() != ""){
+        var value = JSON.parse($("#jsonView").val());
+        if(value instanceof Object){
+            for(item in value){
+                if(value[item] instanceof Object){
+                    $("#"+item+"").val(JSON.stringify(value[item]));
+                }else{
+                    $("#"+item+"").val(value[item]);
+                }
+            }
+        }
+    }
+}
 
 
