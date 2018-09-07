@@ -63,6 +63,10 @@ var certification_pay = {"payer_identity_type":"1&买家标识类型，买家快
 var certification_pay_confirm = {"phone_check_code":"&手机验证码,非空",
     "pay_token":"&支付接口返回的支付token（有效期5分钟）,非空"};
 
+//  协议支付--支付确认
+var agreement_pay_confirm = {"phone_check_code":"&手机验证码,非空",
+    "pay_token":"&支付接口返回的支付token（有效期5分钟）,非空"};
+
 //协议支付- 签约并支付申请
 var card_register_and_pay = {"payer_identity_type":"1&买家标识类型，买家快捷通会员标识类型，默认1 1-快捷通会员ID 2-快捷通会员登录号",
     "payer_identity":"anonymous&买家会员ID或登录账号 如没有快捷通会员ID和登录账号，则填写固定值：anonymous ,非空",
