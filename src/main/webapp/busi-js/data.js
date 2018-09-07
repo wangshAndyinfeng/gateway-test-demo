@@ -92,5 +92,4 @@ var paymethod={"网银页面":unionpay,
     "基金支付":WECHATH5,
     "协议支付":ALIPAY,
     "直接支付":ALIPAYSMQ,
-    "收银台": null
 };
