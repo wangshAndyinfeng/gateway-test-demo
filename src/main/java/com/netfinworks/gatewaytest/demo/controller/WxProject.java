@@ -24,8 +24,8 @@ public class WxProject extends Base {
     @ResponseBody
     public JSONObject getOpenIdByXiaoChengxu(@RequestBody WeiXinRequest weiXinRequest ){
         LOGGER.info("获取微信小程序openId"+JSONObject.toJSON(weiXinRequest));
-        Assert.isNull(weiXinRequest,"请求参数不能为空");
-        Assert.isNull(weiXinRequest.getGetUrl(),"请求url不能为空");
+        Assert.notNull(weiXinRequest,"请求参数不能为空");
+        Assert.notNull(weiXinRequest.getGetUrl(),"请求url不能为空");
         JSONObject jsonObject = null;
         String s = HttpGetService.sendGet(weiXinRequest.getGetUrl());
         jsonObject = JSONObject.parseObject(s);
