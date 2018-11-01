@@ -3,7 +3,7 @@ $(function() {
     var data =JSON.parse(localStorage.getItem("data"));
     console.log(data);
     if(data) {
-        // localStorage.removeItem("data")
+        localStorage.removeItem("data");
         if(data.code == "0000"){
             for(y in data.result) {
                 var obj = data.result[y];
@@ -54,6 +54,10 @@ $(function() {
             var $tr = $("<tr>");
             $tr.append('<td width="15%">子错误信息：</td>');
             $tr.append('<td >'+data.submsg+'</td>');
+            $("#resultId").append($tr);
+            var $tr = $("<tr>");
+            $tr.append('<td width="15%">验签结果：</td>');
+            $tr.append('<td >'+data.verifymsg+'</td>');
             $("#resultId").append($tr);
         }
     }
