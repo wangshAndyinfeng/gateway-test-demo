@@ -71,7 +71,7 @@
         </constructor-arg>
         <!-- 商户私钥 -->
         <constructor-arg index="1">
-            <value>${pfxName}</value>
+            <value>200001723191zsc.pfx</value>
         </constructor-arg>
         <!-- 商户私钥密码 -->
         <constructor-arg index="2">
