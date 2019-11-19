@@ -1,8 +1,10 @@
 package com.netfinworks.gatewaytest.demo.controller;
 
+import com.kjtpay.gateway.common.domain.base.RequestBase;
 import com.netfinworks.gatewaytest.demo.util.exception.ErrorCodeException;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -58,4 +60,29 @@ public class Base {
 
     }
 
+
+    /**
+     * 转换公共请求参数
+     * @param req
+     * @return
+     */
+    public RequestBase convertRequestBaseParm(Map<String,String> req){
+        if(!CollectionUtils.isEmpty(req)){
+            RequestBase requestBase = new RequestBase();
+            requestBase.setRequestNo(req.get("request_no"));
+            requestBase.setService(req.get("service"));
+            requestBase.setVersion(req.get("version"));
+            requestBase.setPartnerId(req.get("partner_id"));
+            requestBase.setCharset(req.get("charset"));
+            requestBase.setSignType(req.get("sign_type"));
+            requestBase.setSign(req.get("sign"));
+            requestBase.setTimestamp(req.get("timestamp"));
+            requestBase.setFormat(req.get("format"));
+            requestBase.setBizContent(req.get("biz_content"));
+
+            return requestBase;
+        }
+
+        return null;
+    }
 }

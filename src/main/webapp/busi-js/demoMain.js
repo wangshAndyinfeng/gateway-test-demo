@@ -52,6 +52,7 @@ $(function() {
             "biz_content" : $("#biz_content").val(),
 
         };
+        debugger
         var req = {
             "signData" : JSON.stringify(signData)
         }

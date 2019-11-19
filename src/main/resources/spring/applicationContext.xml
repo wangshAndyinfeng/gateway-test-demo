@@ -62,4 +62,20 @@
     <value>${kjtPublicKey}</value>
     </constructor-arg>
     </bean>
+
+
+    <bean name="securityServiceHyk" class="com.netfinworks.gatewaytest.demo.service.MySecurityService">
+        <!--快捷通公钥-->
+        <constructor-arg index="0">
+            <value>${certName}</value>
+        </constructor-arg>
+        <!-- 商户私钥 -->
+        <constructor-arg index="1">
+            <value>${pfxName}</value>
+        </constructor-arg>
+        <!-- 商户私钥密码 -->
+        <constructor-arg index="2">
+            <value>${pfxKey}</value>
+        </constructor-arg>
+    </bean>
 </beans>
