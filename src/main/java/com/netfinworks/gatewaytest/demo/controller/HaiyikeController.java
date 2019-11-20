@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kjtpay.gateway.common.domain.base.RequestBase;
 import com.kjtpay.gateway.common.util.security.SecurityService;
+import com.netfinworks.gatewaytest.demo.ro.HykSignReq;
+import com.netfinworks.gatewaytest.demo.ro.WechatReq;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -33,16 +32,13 @@ public class HaiyikeController extends Base{
 
     @ResponseBody
     @RequestMapping( value = "/gateway/hykWechat/encrypt.do", method = RequestMethod.POST)
-    public Map encrypt(@RequestParam(value = "charset", required = true) String charset,
-                       @RequestParam(value = "service", required = true) String service,
-                       @RequestParam(value = "sign_type", required = true) String signType,
-                       @RequestParam(value = "req", required = true) String req) {
+    public Map encrypt(@RequestBody WechatReq wechatReq) {
         Map resp = new HashMap();
-        LOGGER.info("转换前json："+req);
-        if(StringUtils.isNotBlank(req)){
+        LOGGER.info("转换前json："+wechatReq);
+        if(StringUtils.isNotBlank(wechatReq.getReq())){
             JSONObject bizReq = null;
             //因js转出的嵌套json有\，使用gson转成请求类会报错，故需要转换一下
-            String result = encrypt(signType, req, charset);
+            String result = encrypt(wechatReq.getSignType(),wechatReq.getReq(), wechatReq.getCharset());
             LOGGER.info("encrypt方法操作结果："+result);
             resp.put("code","0000");
             resp.put("message","");
@@ -80,19 +76,19 @@ public class HaiyikeController extends Base{
 
     /**
      * 商户签名
-     * @param signData
+     * @param hykSignReq
      * @return
      */
     @ResponseBody
     @RequestMapping( value = "/gateway/hykWechat/sign.do", method = RequestMethod.POST)
-    public Map sign(@RequestParam(value = "signData", required = true) String signData) {
+    public Map sign(@RequestBody HykSignReq hykSignReq ) {
 
         Map resp = new HashMap();
-        if(StringUtils.isNotBlank(signData)){
+        if(StringUtils.isNotBlank(hykSignReq.getSignData())){
 
-            LOGGER.info("海易科签名开始："+signData);
+            LOGGER.info("海易科签名开始："+hykSignReq.getSignData());
             @SuppressWarnings("unchecked")
-            Map<String,String> req = JSON.parseObject(signData, HashMap.class);
+            Map<String,String> req = JSON.parseObject(hykSignReq.getSignData(), HashMap.class);
 
             String charset = req.get("charset");
             String signType = req.get("sign_type");

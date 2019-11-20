@@ -467,7 +467,7 @@ function deleteTradeInfo() {
 
 //加密
 function encrypt() {
-
+    debugger
     var params = $("#form").serializeArray();
     var values = changeToJSON(params)
     var idata = JSON.stringify(values)

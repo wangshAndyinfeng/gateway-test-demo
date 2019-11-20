@@ -63,15 +63,25 @@
     </constructor-arg>
     </bean>
 
+    <bean name="securityServiceHyk" class="com.kjtpay.gateway.common.util.security.SecurityService">
+        <!-- 商户私钥 -->
+        <constructor-arg index="0">
+            <value>${hykPrivate}</value>
+        </constructor-arg>
+        <!-- 快捷通公钥 -->
+        <constructor-arg index="1">
+            <value>${kjtPublicKey}</value>
+        </constructor-arg>
+    </bean>
 
-    <bean name="securityServiceHyk" class="com.netfinworks.gatewaytest.demo.service.MySecurityService">
+    <bean name="securityServiceHykITRUS" class="com.netfinworks.gatewaytest.demo.service.MySecurityService">
         <!--快捷通公钥-->
         <constructor-arg index="0">
             <value>${certName}</value>
         </constructor-arg>
         <!-- 商户私钥 -->
         <constructor-arg index="1">
-            <value>200001723191zsc.pfx</value>
+            <value>${hykPfxName}</value>
         </constructor-arg>
         <!-- 商户私钥密码 -->
         <constructor-arg index="2">
